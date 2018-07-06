@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}课题管理{% endblock %}
+{% block content %}
+    <div class="container" xmlns="http://www.w3.org/1999/html">
+        {% if message %}
+            <div id='notice'>
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="alert alert-warning">{{ message }}</div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        {% endif %}
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                {% if cus_project %}
+                    <div class="article-intro well">
+                        <h1>
+                            {{ cus_project.pro_title }}
+                        </h1>
+                        {% if request.session.cus_role == 'student' and student_.cus_project_id %}
+                            <p class="text-uppercase small">
+                                我选择的课题
+                            </p>
+                        {% elif request.session.cus_role == 'teacher' %}
+                            <p class="text-uppercase small">
+                                我发布的课题
+                            </p>
+                        {% endif %}
+                        <p class="text-uppercase small">
+                            <kbd>作者：{{ cus_project.pro_from_user }}</kbd>
+                            <kbd>分类：课题</kbd>
+                            <kbd>发布时间：{{ cus_project.pro_pub_date }}</kbd>
+                        </p>
+                        <p class="small" id="passage_text">{{ cus_project.pro_text }}</p>
+                    </div>
+                    {% if request.session.cus_role == 'student' and not student_.cus_project_id %}
+                        <form action="/project" method="post">
+                            {% csrf_token %}
+                            <input type='hidden' name='chs_project' value='{{ cus_project.id }}'/>
+                            <button type="submit" class="btn btn-primary pull-right">选择课题</button>
+                        </form>
+                    {% endif %}
+
+
+                {% elif cus_projects %}
+                    {% if request.session.cus_role == 'student' %}
+                        <h3>可选课题：</h3>
+                    {% elif request.session.cus_role == 'teacher' %}
+                        <h3>我发布的课题：</h3>
+                    {% else %}
+                        <h3>所有课题：</h3>
+                    {% endif %}
+
+                    <ul class="list-group">
+                        {% for pro in cus_projects %}
+                            {% if pro.pro_title %}
+                                <a href="/project?pid={{ pro.id }}"
+                                   class="list-group-item list-group-item-light">{{ pro.pro_title }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        window.setTimeout("document.getElementById('notice').innerHTML = '';", 2000);
+    </script>
+    <script>
+        document.getElementById('passage_text').innerHTML = marked(document.getElementById('passage_text').innerHTML);
+    </script>
+{% endblock %}

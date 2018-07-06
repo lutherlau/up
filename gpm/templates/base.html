@@ -1,0 +1,85 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}UPUP毕业设计管理系统{% endblock %}</title>
+    <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #EEEEEE;
+        }
+    </style>
+    {% block css %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/index">UPUP</a>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav">
+                {% block cus_navbar %}
+                    {% if request.session.cus_role == 'student' %}
+                        <li><a href="/project">所选课题</a></li>
+                        <li><a href="/file">文件管理</a></li>
+                        <li><a href="/question">我的提问</a></li>
+                        <li><a href="/schedule">我的进度</a></li>
+                        <li><a href="/teacher">指导教师</a></li>
+                        <li><a href="/evaluate">评价教师</a></li>
+                        <li><a href="/userinfo">个人信息</a></li>
+                    {% elif request.session.cus_role == 'teacher' %}
+                        <li><a href="/student">我的学生</a></li>
+                        <li><a href="/question">向我提问</a></li>
+                        <li><a href="/project">我的课题</a></li>
+                        <li><a href="/publish">发布课题</a></li>
+                        <li><a href="/file">文件管理</a></li>
+                        <li><a href="/evaluate">学生评价</a></li>
+                        <li><a href="/userinfo">个人信息</a></li>
+                    {% elif request.session.cus_role == 'administrator' %}
+                        <li><a href="/data">数据统计</a></li>
+                        <li><a href="/student">管理学生</a></li>
+                        <li><a href="/teacher">管理教师</a></li>
+                        <li><a href="/file">文件管理</a></li>
+                        <li><a href="/publish">发布公告</a></li>
+                        <li><a href="/userinfo">个人信息</a></li>
+                    {% endif %}
+                {% endblock %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% block notice %}
+                {% endblock %}
+                {% if request.session.is_login %}
+                    <li><a href="/userinfo">{{ request.session.cus_name }}</a></li>
+                    <li><a href="/logout">登出</a></li>
+                {% else %}
+                    <li><a href="/login">登录</a></li>
+                    <li><a href="/register">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'marked/marked.min.js' %}"></script>
+
+{% block content %}{% endblock %}
+<div class="container">
+
+    <nav class="navbar navbar-default" style="background-color: #EEEEEE;">
+        <div class="container-fluid">
+            <div class="navbar-collapse">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><p>Copyleft 2018</p></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>

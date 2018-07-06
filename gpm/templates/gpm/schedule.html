@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}用户信息{% endblock %}
+{% block content %}
+    <div class="container">
+        {% if request.session.is_login %}
+            <p class="list-group-item list-group-item-light">
+                <kbd style="background-color: #00b8d4">选择课题：{% if percent < 30 %}未选择{% else %}已选择{% endif %}</kbd>
+                <br>
+                <kbd style="background-color: #00b8d4">提交文件：{% if percent < 60 %}未提交{% else %}已提交{% endif %}</kbd>
+                <br>
+                <kbd style="background-color: #00b8d4">评价教师：{% if percent < 100 %}已评价{% else %}未评价{% endif %}</kbd>
+                <br>
+
+            </p>
+            <br>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success" role="progressbar"
+                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: {{ percent }}%;">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

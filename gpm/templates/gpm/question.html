@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}问题相关{% endblock %}
+{% block content %}
+    <div class="container">
+        {% if message %}
+            <div id='notice'>
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="alert alert-warning">{{ message }}</div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        {% endif %}
+        {% if request.session.cus_role == 'student' %}
+            <form action="/question" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="pos_message">问题:</label>
+                    <input type="text" class="form-control" name="pos_message" id="pos_message">
+                </div>
+                <button type="submit" class="btn btn-primary pull-right">提交</button>
+            </form>
+            <br>
+        {% endif %}
+        {% if question %}
+            {% if request.session.cus_role == 'teacher' %}
+                <h5><strong>{{ question.que_from_user }}向我的提问：</strong></h5>
+            {% elif request.session.cus_role == 'student' %}
+                <h5><strong>我向{{ question.que_from_user }}老师的提问：</strong></h5>
+            {% endif %}
+            <br>
+            <div class="article-intro well">
+                {{ question.que_text }}
+                {% if answer %}
+                    {% if request.session.cus_role == 'teacher' %}
+                        </div>
+                        <h5><strong>我的回答：</strong></h5>
+                        <div class="article-intro well">
+                    {% endif %}
+                {% if request.session.cus_role == 'student' %}
+                    </div>
+                    <h5><strong>{{ question.que_from_user }}老师的回答：</strong></h5>
+                    <div class="article-intro well">
+
+                {% endif %}
+                {{ answer.ans_text }}
+                {% else %}
+                {% if request.session.cus_role == 'teacher' %}
+                    <p class="small"><span class="small">该问题等待您的回答</span></p>
+                    </div>
+                    <div>
+                    <form action="/question" method="post">
+                        {% csrf_token %}
+                        <input type='hidden' name='pos_ans_que_id' value='{{ question.id }}'/>
+                        <div class="form-group">
+                            <label for="pos_message">回答:</label>
+                            <input type="text" class="form-control" name="pos_message" id="pos_message">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary pull-right">提交</button>
+                    </form>
+                {% elif request.session.cus_role == 'student' %}
+                    <br>
+                    <br>
+                    <p class="small"><span class="small">该问题等待老师的回答</span></p>
+                {% endif %}
+                {% endif %}
+                </div>
+        {% elif questions %}
+            <!-- 所有问题 -->
+            {% if request.session.cus_role == 'teacher' %}
+                <h5><strong>学生向我的提问：</strong></h5>
+            {% endif %}
+            {% if request.session.cus_role == 'student' %}
+                <h5><strong>我向老师的提问：</strong></h5>
+            {% endif %}
+            {% for question in questions %}
+                <a href="/question?qid={{ question.id }}"
+                   class="list-group-item list-group-item-light">{{ question.que_text }}
+                    {% if not question.que_replay %}
+                        <span class="label label-primary pull-right">待回答</span>
+                    {% endif %}
+                    {% if not question.que_read %}
+                        <span class="label label-primary pull-right">待查看</span>
+                    {% endif %}</a>
+            {% endfor %}
+        {% else %}
+            {% if request.session.cus_role == 'teacher' %}
+                <h5><strong>还没有学生向您提问</strong></h5>
+            {% endif %}
+            {% if request.session.cus_role == 'student' %}
+                <h5><strong>您还没有向老师发起过提问</strong></h5>
+            {% endif %}
+        {% endif %}
+    </div>
+    <script>
+        window.setTimeout("document.getElementById('notice').innerHTML = '';", 2000);
+    </script>
+{% endblock %}

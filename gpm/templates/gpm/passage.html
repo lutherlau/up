@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}文章{% endblock %}
+{% block content %}
+    <div class="container" xmlns="http://www.w3.org/1999/html">
+        {% if message %}
+            <div id='notice'>
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="alert alert-warning">{{ message }}</div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        {% endif %}
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                {% if announcement_ %}
+
+                    <div class="article-intro well">
+                        <h1>
+                            {{ announcement_.ann_title }}
+                        </h1>
+                        <p class="text-uppercase small">
+                            <kbd>作者：管理员</kbd>
+                            <kbd>分类：通知公告</kbd>
+                            <kbd>发布时间：{{ announcement_.ann_pub_date }}</kbd>
+                        </p>
+                        <p class="small" id="passage_text">{{ announcement_.ann_text }}</p>
+                    </div>
+                {% elif announcements %}
+                    <h3>通知公告</h3>
+                    <ul class="list-group">
+                        {% for ann in announcements %}
+                            {% if ann.ann_title %}
+                                <a href="/passage?pos_category=ann&pid={{ ann.id }}"
+                                   class="list-group-item list-group-item-light">{{ ann.ann_title }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% elif regulation_ %}
+                    <div class="article-intro well">
+                        <h1>
+                            {{ regulation_.reg_title }}
+                        </h1>
+                        <p class="text-uppercase small">
+                            <kbd>作者：管理员</kbd>
+                            <kbd>分类：管理规定</kbd>
+                            <kbd>发布时间：{{ regulation_.reg_pub_date }}</kbd>
+                        </p>
+                        <p class="small" id="passage_text">{{ regulation_.reg_text }}</p>
+                    </div>
+                {% elif regulations %}
+                    <h3>管理规定</h3>
+                    <ul class="list-group">
+                        {% for reg in regulations %}
+                            {% if reg.reg_title %}
+                                <a href="/passage?pos_category=reg&pid={{ reg.id }}"
+                                   class="list-group-item list-group-item-light">{{ reg.reg_title }}</a>
+                            {% endif %}
+                            </ul>
+                        {% endfor %}
+                {% elif journalism_ %}
+                    <div class="article-intro well">
+                        <h1>
+                            {{ journalism_.jou_title }}
+                        </h1>
+                        <p class="text-uppercase small">
+                            <kbd>作者：管理员</kbd>
+                            <kbd>分类：最新动态</kbd>
+                            <kbd>发布时间：{{ journalism_.jou_pub_date }}</kbd>
+                        </p>
+                        <p class="small" id="passage_text">{{ journalism_.jou_text }}</p>
+                    </div>
+                {% elif journalism %}
+                    <h3>最新动态</h3>
+                    <ul class="list-group">
+                        {% for jou in journalism %}
+                            {% if jou.jou_title %}
+                                <a href="/passage?pos_category=jou&pid={{ jou.id }}"
+                                   class="list-group-item list-group-item-light">{{ jou.jou_title }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <a href="/passage?pos_category=ann" class="list-group-item list-group-item-light">通知公告</a>
+                    <a href="/passage?pos_category=reg" class="list-group-item list-group-item-light">管理规定</a>
+                    <a href="/passage?pos_category=jou" class="list-group-item list-group-item-light">最新动态</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        window.setTimeout("document.getElementById('notice').innerHTML = '';", 2000);
+    </script>
+    <script>
+        document.getElementById('passage_text').innerHTML = marked(document.getElementById('passage_text').innerHTML);
+    </script>
+{% endblock %}

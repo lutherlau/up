@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+        {% block title %}
+        {% if request.session.cus_role == 'administrator' %}
+        管理教师
+        {% endif %}
+        {% endblock %}
+
+        {% block content %}
+<div class="container">
+
+
+    {% if request.session.cus_role == 'administrator' %}{% if teachers_ret %}
+    {% for tea in teachers_ret %}
+    <p class="list-group-item list-group-item-light">
+        <kbd style="background-color: #00b8d4">姓名：{{ tea.cus_name }}</kbd>
+        <kbd style="background-color: #00b8d4">教工号：{{ tea.cus_id }}</kbd>
+        <kbd style="background-color: #00b8d4">专业：{{ tea.cus_major }}</kbd>
+        <kbd style="background-color: #00b8d4">学院：{{ tea.cus_college }}</kbd>
+        <kbd style="background-color: #ac2925; color: #ffffff" class="pull-right">
+            <a href="/teacher?tea_id={{ tea.cus_id }}&co=re" style="color: #ffffff">删除</a>
+        </kbd>
+        <kbd style="background-color: #4dd0e1" class="pull-right">
+            <a href="/teacher?tea_id={{ tea.cus_id }}&co=up" style="color: #ffffff">管理</a>
+        </kbd>
+        {% endfor %}
+        {% endif %}
+    </p>
+    {% endif %}
+</div>
+        {% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}注册{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+            <form class='form-register' action="/register" method="post">
+                {% if message %}
+                    <div class="alert alert-warning">{{ message }}</div>
+                {% endif %}
+                {% csrf_token %}
+                <h2 class="text-center">欢迎注册</h2>
+                <div class="form-group">
+                    {{ register_form.cus_id.label_tag }}
+                    {{ register_form.cus_id }}
+                </div>
+                <div class="form-group">
+                    {{ register_form.cus_name.label_tag }}
+                    {{ register_form.cus_name }}
+                </div>
+                <div class="form-group">
+                    {{ register_form.cus_email.label_tag }}
+                    {{ register_form.cus_email }}
+                </div>
+                <div class="form-group">
+                    {{ register_form.cus_major.label_tag }}
+                    {{ register_form.cus_major }}
+                </div>
+                <div class="form-group">
+                    {{ register_form.cus_college.label_tag }}
+                    {{ register_form.cus_college }}
+                </div>
+
+                <div class="form-group">
+                    {{ register_form.cus_password_1.label_tag }}
+                    {{ register_form.cus_password_1 }}
+                </div>
+                <div class="form-group">
+                    {{ register_form.cus_password_2.label_tag }}
+                    {{ register_form.cus_password_2 }}
+                </div>
+                <div class="form-group">
+                    {{ register_form.cus_sex.label_tag }}
+                    {{ register_form.cus_sex }}
+                </div>
+                <button type="reset" class="btn btn-default pull-left">重置</button>
+                <button type="submit" class="btn btn-primary pull-right">注册</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

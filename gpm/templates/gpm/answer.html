@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}我的问题{% endblock %}
+{% block content %}
+    {% if request.session.user_role != 'student' %}
+        <div class="container">
+            <div class="col">
+                <div class="col-sm-6">
+                    <h3>我的问题</h3>
+                    <ul class="list-group">
+                        {% for item in my_student_messages %}
+                            <li>
+                                <a href="/question_item/?qid={{ item.id }}"
+                                   class="list-group-item list-group-item-light">{{ item.message }}
+                                    {{ item.from_user }}
+                                    {% if message.is_Reversion %}
+                                        问题已回复
+                                    {% else %}
+                                        问题待回复
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

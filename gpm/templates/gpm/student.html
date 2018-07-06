@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if request.session.cus_role == 'teacher' %}
+        管理我的学生
+    {% elif request.session.cus_role == 'administrator' %}
+        管理所有学生
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if request.session.cus_role == 'teacher' %}
+            {% if students_ret %}
+                {% for stu in students_ret %}
+                    <p class="list-group-item list-group-item-light">
+                        <kbd style="background-color: #00b8d4">姓名：{{ stu.cus_name }}</kbd>
+                        <kbd style="background-color: #00b8d4">学号：{{ stu.cus_id }}</kbd>
+                        <kbd style="background-color: #00b8d4">专业：{{ stu.cus_major }}</kbd>
+                        <kbd style="background-color: #00b8d4">学院：{{ stu.cus_college }}</kbd>
+                        <kbd style="background-color: #ac2925; color: #ffffff" class="pull-right">
+                            <a href="/student?stu_id={{ stu.cus_id }}&co=del" style="color: #ffffff">删除</a></kbd>
+                        <kbd style="background-color: #4dd0e1" class="pull-right">
+                            <a href="/student?stu_id={{ stu.cus_id }}&co=up" style="color: #ffffff">管理</a></kbd>
+
+                        {% if stu.cus_urge %}
+                            <kbd style="background-color: #4dd0e1" class="pull-right"> 已催交 </kbd>
+                        {% else %}
+                            {% if not stu.cus_project_file %}
+                                <kbd style="background-color: #4dd0e1" class="pull-right">
+                                    <a href="/student?stu_id={{ stu.cus_id }}&co=ur" style="color: #ffffff">催交</a>
+                                </kbd>
+                            {% endif %}
+                        {% endif %}
+
+
+                        <kbd style="background-color: #4dd0e1" class="pull-right">{% if stu.cus_project_file %}
+                            已提交文件{% else %}待提交文件{% endif %}</kbd>
+                    </p>
+                {% endfor %}
+            {% endif %}
+            {% elif request.session.cus_role == 'administrator' %}{% if students_ret %}
+                {% for stu in students_ret %}
+                    <p class="list-group-item list-group-item-light">
+                    <kbd style="background-color: #00b8d4">姓名：{{ stu.cus_name }}</kbd>
+                    <kbd style="background-color: #00b8d4">学号：{{ stu.cus_id }}</kbd>
+                    <kbd style="background-color: #00b8d4">专业：{{ stu.cus_major }}</kbd>
+                    <kbd style="background-color: #00b8d4">学院：{{ stu.cus_college }}</kbd>
+                    <kbd style="background-color: #ac2925; color: #ffffff" class="pull-right">
+                        <a href="/student?stu_id={{ stu.cus_id }}&co=re" style="color: #ffffff">删除</a></kbd>
+                    <kbd style="background-color: #4dd0e1" class="pull-right">
+                        <a href="/student?stu_id={{ stu.cus_id }}&co=up" style="color: #ffffff">管理</a></kbd>
+                {% endfor %}
+            {% endif %}
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

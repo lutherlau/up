@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    数据管理
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if request.session.cus_role == 'administrator' %}
+            <p class="list-group-item list-group-item-light">
+                <kbd style="background-color: #00b8d4">问题总数：{{ questions }}</kbd>
+                <kbd style="background-color: #00b8d4">待查看：{{ questions_to_read }}</kbd>
+                <kbd style="background-color: #00b8d4">待回复：{{ questions_to_reply }}</kbd>
+            </p>
+            <p class="list-group-item list-group-item-light">
+                <kbd style="background-color: #00b8d4">回答总数：{{ answers }}</kbd>
+            </p>
+            <a class="list-group-item list-group-item-light" href="/project">
+                <kbd style="background-color: #00b8d4">全部课题：{{ questions }}</kbd>
+            </a>
+            <a class="list-group-item list-group-item-light" href="/student">
+                <kbd style="background-color: #00b8d4">学生总数：{{ students }}</kbd>
+            </a>
+            <a class="list-group-item list-group-item-light" href="/teacher">
+                <kbd style="background-color: #00b8d4">答疑率：{{ percent_ans }} % </kbd>
+            </a>
+            <p class="list-group-item list-group-item-light">
+                <kbd style="background-color: #00b8d4">教师总数：{{ teachers }}</kbd>
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

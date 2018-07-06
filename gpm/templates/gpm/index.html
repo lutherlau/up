@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}UPUP毕业设计管理系统主页{% endblock %}
+{% block notice %}
+    {% if student_ur %}
+        <li><a href="/file"><span class="badge pull-right">请尽快提交文件</span></a></li>
+    {% endif %}
+    {% if notice_cnt and notice_cnt != 0 %}
+        <li><a href="/question"> 新通知 <span class="badge pull-right">{{ notice_cnt }} </span></a></li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col">
+            <div class="col-sm-6">
+                <a href="/passage?pos_category=jou">
+                    <h3>最新动态</h3></a>
+                <ul class="list-group">
+                    {% for jou in journalism %}
+                        {% if jou.jou_title %}
+                            <a href="/passage?pos_category=jou&pid={{ jou.id }}"
+                               class="list-group-item list-group-item-light">{{ jou.jou_title }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <div class="col-sm-6">
+                <a href="/passage?pos_category=reg"><h3>管理规定</h3></a>
+
+                {% for reg in regulations %}
+                    {% if reg.reg_title %}
+                        <a href="/passage?pos_category=reg&pid={{ reg.id }}"
+                           class="list-group-item list-group-item-light">{{ reg.reg_title }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col">
+            <div class="col-sm-6">
+                <a href="/passage?pos_category=ann"><h3>通知公告</h3></a>
+                <ul class="list-group">
+                    {% for ann in announcements %}
+                        {% if ann.ann_title %}
+                            <a href="/passage?pos_category=ann&pid={{ ann.id }}"
+                               class="list-group-item list-group-item-light">{{ ann.ann_title }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="col-sm-6">
+                <a href="/file"><h3>文件下载</h3></a>
+                {% for file in public_files %}
+                    {% if file.all_fil_text %}
+                        <a href="/file?fid={{ file.id }}"
+                           class="list-group-item list-group-item-light">{{ file.all_fil_text }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

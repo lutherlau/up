@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}用户信息{% endblock %}
+{% block content %}
+    {% if request.session.is_login %}
+        <div class="container">
+            {% if request.session.cus_role == 'teacher' %}
+                <p class="list-group-item list-group-item-light">性别：
+                    {% if cus_info.cus_sex == 'male' %}男
+                    {% else %}女{% endif %}</p>
+                <p class="list-group-item list-group-item-light">学院：{{ cus_info.cus_college }}</p>
+                <p class="list-group-item list-group-item-light">专业：{{ cus_info.cus_major }}</p>
+                <p class="list-group-item list-group-item-light">用户名：{{ cus_info.cus_name }}</p>
+                <p class="list-group-item list-group-item-light">邮箱：{{ cus_info.cus_email }}</p>
+                <p class="list-group-item list-group-item-light">教工号：{{ cus_info.cus_id }}</p>
+                <p class="list-group-item list-group-item-light">注册时间：{{ cus_info.cus_join_time.date }}</p>
+                <p class="list-group-item list-group-item-light">用户组：教师</p>
+            {% elif  request.session.cus_role == 'administrator' %}
+                <p class="list-group-item list-group-item-light">性别：
+                    {% if cus_info.cus_sex == 'male' %}男
+                    {% else %}女{% endif %}</p>
+                <p class="list-group-item list-group-item-light">学院：{{ cus_info.cus_college }}</>
+                <p class="list-group-item list-group-item-light">专业：{{ cus_info.cus_major }}</p>
+                <p class="list-group-item list-group-item-light">用户名：{{ cus_info.cus_name }}</p>
+                <p class="list-group-item list-group-item-light">邮箱：{{ cus_info.cus_email }}</p>
+                <p class="list-group-item list-group-item-light">学号：{{ cus_info.cus_id }}</p>
+                <p class="list-group-item list-group-item-light">注册时间：{{ cus_info.cus_join_time.date }}</p>
+                <p class="list-group-item list-group-item-light">所选课题：{{ cus_info.cus_project_id }}</p>
+                <p class="list-group-item list-group-item-light">用户组：管理员</p>
+            {% elif  request.session.cus_role == 'student' %}
+                {% if teacher_ %}
+                    <br><h4>您选择的课题：</h4>
+                    <p class="list-group-item list-group-item-light">所选课题：
+                        {% if cus_project %}
+                            {{ cus_project.pro_title }}
+                        {% else %}
+                            还未选择课题
+                        {% endif %}
+                    </p>
+                    <br><h4>您的指导教师：</h4>
+
+                    <p class="list-group-item list-group-item-light">性别：
+                        {% if cus_info.cus_sex == 'male' %}男
+                        {% else %}女{% endif %}</p>
+                    <p class="list-group-item list-group-item-light">学院：{{ cus_info.cus_college }}</p>
+                    <p class="list-group-item list-group-item-light">专业：{{ cus_info.cus_major }}</p>
+                    <p class="list-group-item list-group-item-light">用户名：{{ cus_info.cus_name }}</p>
+                    <p class="list-group-item list-group-item-light">邮箱：{{ cus_info.cus_email }}</p>
+                    <p class="list-group-item list-group-item-light">教工号：{{ cus_info.cus_id }}</p>
+                    <p class="list-group-item list-group-item-light">注册时间：{{ cus_info.cus_join_time.date }}</p>
+
+                {% else %}
+                    <p class="list-group-item list-group-item-light">性别：
+                        {% if cus_info.cus_sex == 'male' %}男
+                        {% else %}女{% endif %}</p>
+                    <p class="list-group-item list-group-item-light">学院：{{ cus_info.cus_college }}</>
+                    <p class="list-group-item list-group-item-light">专业：{{ cus_info.cus_major }}</p>
+                    <p class="list-group-item list-group-item-light">用户名：{{ cus_info.cus_name }}</p>
+                    <p class="list-group-item list-group-item-light">邮箱：{{ cus_info.cus_email }}</p>
+                    <p class="list-group-item list-group-item-light">学号：{{ cus_info.cus_id }}</p>
+                    <p class="list-group-item list-group-item-light">注册时间：{{ cus_info.cus_join_time.date }}</p>
+                    <p class="list-group-item list-group-item-light">所选课题：
+                        {% if cus_project %}
+                            {{ cus_project.pro_title }}
+                        {% else %}
+                            还未选择课题  {% endif %}
+                    </p>
+                    <p class="list-group-item list-group-item-light">用户组：学生</p>
+                {% endif %}
+            {% endif %}
+
+            <br>
+            <br>
+            {% if request.session.cus_id_str == cus_info.cus_id %}
+                <div class="col-md-4 col-md-offset-4">
+                    <button type="submit" class="btn btn-primary pull-right">修改信息</button>
+                    <button type="reset" class="btn btn-primary pull-left">重置密码</button>
+                </div>
+            {% endif %}
+        </div>
+
+
+    {% endif %}
+{% endblock %}
